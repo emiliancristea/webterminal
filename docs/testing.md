@@ -5,8 +5,9 @@ This document describes the testing infrastructure and how to run tests for the 
 ## Testing Setup
 
 The project uses:
+
 - **Vitest** - Fast unit test runner built on Vite
-- **React Testing Library** - Testing utilities for React components  
+- **React Testing Library** - Testing utilities for React components
 - **@testing-library/jest-dom** - Custom Jest matchers for DOM testing
 - **JSDOM** - DOM environment for testing
 
@@ -90,10 +91,10 @@ To add test coverage reporting, you can extend the vitest configuration:
 export default defineConfig({
   test: {
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html']
-    }
-  }
+      provider: "v8",
+      reporter: ["text", "html"],
+    },
+  },
 });
 ```
 

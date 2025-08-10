@@ -7,6 +7,7 @@ A full-featured Linux terminal environment accessible through your web browser. 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6+-blue)
 ![Express](https://img.shields.io/badge/Express-4.21+-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
+![CI/CD](https://github.com/emiliancristea/webterminal/actions/workflows/ci.yml/badge.svg)
 
 ## 🚀 Features
 
