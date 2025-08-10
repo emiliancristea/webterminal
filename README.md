@@ -1,6 +1,8 @@
 # Web Terminal
 
-A full-featured Linux terminal environment accessible through your web browser. Experience authentic command-line interactions with real Linux command execution, persistent sessions, and mobile-optimized design.
+A full-featured Linux terminal environment accessible through your web browser. Experience authentic command-line interactions with automatic environment detection - from simulated demo mode on GitHub Pages to real Linux command execution with a backend server.
+
+🌐 **[Try Live Demo](https://emiliancristea.github.io/webterminal/)** • 🖥️ **[Full Version on Replit](https://replit.com/@emiliancristea/webterminal)**
 
 ![Web Terminal](https://img.shields.io/badge/Terminal-Web%20Based-green)
 ![React](https://img.shields.io/badge/React-18+-blue)
@@ -8,6 +10,20 @@ A full-featured Linux terminal environment accessible through your web browser. 
 ![Express](https://img.shields.io/badge/Express-4.21+-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![CI/CD](https://github.com/emiliancristea/webterminal/actions/workflows/ci.yml/badge.svg)
+
+## ✨ Dual Deployment Modes
+
+### 🌐 Demo Mode (GitHub Pages)
+- Complete simulated Linux environment in the browser
+- File system navigation, command history, shell features
+- Perfect for portfolios and demonstrations
+- **No backend required** - works on any static host
+
+### 🖥️ Full Backend Mode  
+- **Real Linux command execution** with Node.js, npm, git
+- Persistent sessions and working directories
+- File editing, package management, development tools
+- WebSocket-based real-time terminal communication
 
 ## 🚀 Features
 
@@ -352,31 +368,59 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🚀 Deployment
 
-### GitHub Pages (Recommended for Static Demo)
+WebTerminal supports two deployment modes that automatically adapt to your environment:
 
-This project is configured for automatic deployment to GitHub Pages:
+### 🌐 GitHub Pages (Demo Mode)
+
+**Perfect for portfolios and demonstrations**
+
+The application automatically detects GitHub Pages and switches to demo mode:
 
 1. **Enable GitHub Pages**: Go to repository Settings → Pages → Source: GitHub Actions
 2. **Automatic Deployment**: Push to main branch triggers automatic deployment
-3. **Manual Deployment**: Use the "Deploy to GitHub Pages" workflow in Actions tab
-4. **Access**: Your app will be available at `https://emiliancristea.github.io/webterminal/`
+3. **Access**: Your app will be available at `https://emiliancristea.github.io/webterminal/`
 
-**Note**: GitHub Pages deployment provides a static frontend demo. For full terminal functionality, you'll need a backend server.
+**Demo Mode Features:**
+- ✅ Complete simulated Linux environment
+- ✅ File system navigation (`ls`, `cd`, `pwd`)
+- ✅ File viewing (`cat`, `echo`)
+- ✅ Command history and shell features
+- ✅ No backend server required
 
-### Replit (Recommended for Full Functionality)
+### 🖥️ Full Backend Mode
 
-This project is optimized for Replit deployment:
+**For real Linux command execution and development**
+
+#### Replit (Recommended)
+
+[![Run on Replit](https://replit.com/badge/github/emiliancristea/webterminal)](https://replit.com/@emiliancristea/webterminal)
 
 1. Import the repository to Replit
-2. Install dependencies automatically
-3. Run with the built-in runner
+2. Dependencies install automatically
+3. Click "Run" for full Linux environment
 
-### Traditional Hosting
+#### Traditional Hosting
 
 1. Build the project: `npm run build`
 2. Deploy the `dist/` directory to your server
 3. Configure reverse proxy for WebSocket support
 4. Set up PostgreSQL database (optional)
+
+**Full Mode Features:**
+- ✅ Real Linux command execution
+- ✅ Package management (npm, apt, pip)
+- ✅ File editing (nano, vim)
+- ✅ Git operations
+- ✅ Development tools (Node.js, Python)
+
+### 🔄 Automatic Mode Detection
+
+The application automatically detects your environment:
+- **Backend Available**: Full Linux terminal with real command execution
+- **Static Hosting**: Demo mode with simulated commands
+- **Visual Indicator**: Status bar shows current mode
+
+Try the live demo: **https://emiliancristea.github.io/webterminal/**
 
 ### Docker (Coming Soon)
 
