@@ -8,6 +8,7 @@ interface MobileToolbarProps {
   onShowSettings: () => void;
   isConnected: boolean;
   sessionId: string;
+  mode?: 'real' | 'demo';
 }
 
 export function MobileToolbar({
@@ -16,6 +17,7 @@ export function MobileToolbar({
   onShowSettings,
   isConnected,
   sessionId,
+  mode = 'real',
 }: MobileToolbarProps) {
   return (
     <div className="bg-terminal-dark border-b border-terminal-grey/20 px-4 py-2 flex items-center justify-between md:hidden">
@@ -43,7 +45,12 @@ export function MobileToolbar({
           className="text-terminal-grey text-xs"
           data-testid="text-session-info"
         >
-          user@webterminal • {sessionId.slice(0, 8)}
+          user@webterminal • {sessionId.slice(0, 8)} • 
+          <span className={cn(
+            mode === 'real' ? "text-terminal-blue" : "text-terminal-yellow"
+          )}>
+            {mode === 'real' ? 'Full' : 'Demo'}
+          </span>
         </span>
       </div>
 

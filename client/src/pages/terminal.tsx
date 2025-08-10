@@ -15,16 +15,32 @@ export default function TerminalPage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [backendMode, setBackendMode] = useState<'real' | 'demo' | 'loading'>('loading');
   const isMobile = useIsMobile();
 
-  // Create or get existing session
+  // Check backend availability and create session
   const { data: session, isLoading: sessionLoading } = useQuery<Session>({
     queryKey: ["/api/sessions/create"],
     queryFn: async () => {
-      const response = await apiRequest("POST", "/api/sessions");
-      return response.json();
+      try {
+        const response = await apiRequest("POST", "/api/sessions");
+        setBackendMode('real');
+        return response.json();
+      } catch (error) {
+        setBackendMode('demo');
+        // Return a mock session for demo mode
+        return {
+          id: `demo-${Date.now()}`,
+          userId: "user",
+          currentDirectory: "/home/user",
+          environmentVars: {},
+          createdAt: new Date(),
+          lastActivity: new Date(),
+        };
+      }
     },
-    staleTime: Infinity, // Keep session alive
+    staleTime: Infinity,
+    retry: false, // Don't retry if backend is not available
   });
 
   useEffect(() => {
@@ -127,11 +143,14 @@ export default function TerminalPage() {
     };
   }, [terminal]);
 
-  if (sessionLoading || !sessionId) {
+  if (sessionLoading || !sessionId || backendMode === 'loading') {
     return (
       <div className="h-screen bg-terminal-black flex items-center justify-center">
-        <div className="text-terminal-white font-mono">
-          <div className="animate-pulse">Initializing terminal session...</div>
+        <div className="text-terminal-white font-mono text-center">
+          <div className="animate-pulse mb-4">Initializing terminal session...</div>
+          <div className="text-sm text-terminal-grey">
+            {backendMode === 'loading' ? 'Checking backend availability...' : 'Setting up environment...'}
+          </div>
         </div>
       </div>
     );
@@ -147,6 +166,7 @@ export default function TerminalPage() {
           onShowSettings={handleShowSettings}
           isConnected={terminal.isConnected}
           sessionId={sessionId}
+          mode={backendMode}
         />
       )}
 
@@ -248,6 +268,19 @@ export default function TerminalPage() {
               />
               <span data-testid="text-session-time">
                 Session: {sessionId.slice(0, 8)}
+              </span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div
+                className={cn(
+                  "w-2 h-2 rounded-full",
+                  backendMode === 'real' ? "bg-terminal-blue" : "bg-terminal-yellow",
+                )}
+              />
+              <span className={cn(
+                backendMode === 'real' ? "text-terminal-blue" : "text-terminal-yellow"
+              )}>
+                {backendMode === 'real' ? 'Full Backend' : 'Demo Mode'}
               </span>
             </div>
           </div>

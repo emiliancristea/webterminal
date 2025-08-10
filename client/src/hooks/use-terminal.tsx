@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useWebSocket } from "./use-websocket";
+import { useDemoTerminal } from "./use-demo-terminal";
 
 interface TerminalOutput {
   id: string;
@@ -20,6 +21,57 @@ interface UseTerminalOptions {
 }
 
 export function useTerminal({ sessionId }: UseTerminalOptions) {
+  const [backendAvailable, setBackendAvailable] = useState<boolean | null>(null);
+  const [useDemo, setUseDemo] = useState(false);
+
+  // Check if backend is available
+  useEffect(() => {
+    const checkBackend = async () => {
+      try {
+        const response = await fetch('/api/sessions', {
+          method: 'HEAD',
+          headers: { 'Accept': 'application/json' }
+        });
+        setBackendAvailable(response.ok);
+        setUseDemo(!response.ok);
+      } catch (error) {
+        setBackendAvailable(false);
+        setUseDemo(true);
+      }
+    };
+    
+    checkBackend();
+  }, []);
+
+  const demoTerminal = useDemoTerminal();
+
+  // If we should use demo mode, return demo terminal
+  if (useDemo) {
+    return demoTerminal;
+  }
+
+  // If we're still checking backend availability, show loading state
+  if (backendAvailable === null) {
+    return {
+      output: [],
+      currentCommand: "",
+      setCurrentCommand: () => {},
+      prompt: { user: "user", hostname: "webterminal", directory: "~" },
+      isConnected: false,
+      isLoading: false,
+      isInitializing: true,
+      executeCommand: () => {},
+      clearTerminal: () => {},
+      navigateHistory: () => {},
+      handleResize: () => {},
+    };
+  }
+
+  // Use real terminal with backend
+  return useRealTerminal({ sessionId });
+}
+
+function useRealTerminal({ sessionId }: UseTerminalOptions) {
   const [output, setOutput] = useState<TerminalOutput[]>([]);
   const [currentCommand, setCurrentCommand] = useState("");
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
