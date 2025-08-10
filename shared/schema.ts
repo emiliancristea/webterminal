@@ -1,10 +1,19 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, jsonb, boolean } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  varchar,
+  timestamp,
+  jsonb,
+  boolean,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const sessions = pgTable("sessions", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   userId: varchar("user_id"),
   currentDirectory: text("current_directory").notNull().default("/home/user"),
   environmentVars: jsonb("environment_vars").default({}),
@@ -13,7 +22,9 @@ export const sessions = pgTable("sessions", {
 });
 
 export const commands = pgTable("commands", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   sessionId: varchar("session_id").notNull(),
   command: text("command").notNull(),
   output: text("output").notNull(),
@@ -22,7 +33,9 @@ export const commands = pgTable("commands", {
 });
 
 export const files = pgTable("files", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   sessionId: varchar("session_id").notNull(),
   path: text("path").notNull(),
   name: text("name").notNull(),

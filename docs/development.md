@@ -7,12 +7,14 @@ This guide will help you set up your development environment and understand the 
 ## Prerequisites
 
 ### Required Software
+
 - **Node.js** 18 or higher
 - **npm** 9 or higher (comes with Node.js)
 - **Git** for version control
 - **Code Editor** (VS Code recommended)
 
 ### Recommended VS Code Extensions
+
 - TypeScript and JavaScript Language Features
 - ES7+ React/Redux/React-Native snippets
 - Tailwind CSS IntelliSense
@@ -132,18 +134,21 @@ shared/
 ### 1. Code Structure Guidelines
 
 #### TypeScript
+
 - Use strict TypeScript settings
 - Define proper interfaces for all data structures
 - Prefer type inference over explicit typing when clear
 - Use Zod schemas for runtime validation
 
 #### React Components
+
 - Use functional components with hooks
 - Keep components small and focused
 - Use custom hooks for complex logic
 - Follow the component composition pattern
 
 #### Styling
+
 - Use Tailwind CSS for styling
 - Follow the existing design system
 - Use CSS variables for theming
@@ -183,7 +188,7 @@ npx shadcn-ui@latest add dialog
 
 ```typescript
 // hooks/use-example.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useExample() {
   const [state, setState] = useState(null);
@@ -216,11 +221,11 @@ app.get("/api/new-endpoint", async (req, res) => {
 
 ```typescript
 // server/routes.ts
-ws.on('message', (data) => {
+ws.on("message", (data) => {
   const message = JSON.parse(data.toString());
-  
+
   switch (message.type) {
-    case 'new-event':
+    case "new-event":
       // handle new event
       break;
   }
@@ -262,8 +267,8 @@ The project is set up to support testing with your preferred framework:
 
 ```typescript
 // Example test structure
-describe('Terminal Component', () => {
-  it('should execute commands', () => {
+describe("Terminal Component", () => {
+  it("should execute commands", () => {
     // test implementation
   });
 });
@@ -317,8 +322,9 @@ dist/
 ### Server Debugging
 
 1. **Console Logging**
+
    ```typescript
-   console.log('Debug info:', { sessionId, command });
+   console.log("Debug info:", { sessionId, command });
    ```
 
 2. **Request Logging**
@@ -329,16 +335,19 @@ dist/
 ### Common Issues
 
 #### WebSocket Connection Failed
+
 - Check if server is running on correct port
 - Verify firewall settings
 - Test with `wscat` for isolation
 
 #### Commands Not Executing
+
 - Check command restrictions in `routes.ts`
 - Verify session ID is valid
 - Test with curl for API isolation
 
 #### Build Errors
+
 - Clear node_modules and reinstall
 - Check TypeScript configuration
 - Verify import paths
@@ -384,17 +393,18 @@ dist/
    - Use kebab-case for file names
 
 3. **Import Organization**
+
    ```typescript
    // External libraries
-   import React from 'react';
-   import { useState } from 'react';
-   
+   import React from "react";
+   import { useState } from "react";
+
    // Internal imports
-   import { Component } from '@/components/component';
-   import { useHook } from '@/hooks/use-hook';
-   
+   import { Component } from "@/components/component";
+   import { useHook } from "@/hooks/use-hook";
+
    // Types
-   import type { ComponentProps } from './types';
+   import type { ComponentProps } from "./types";
    ```
 
 ### Commit Messages
@@ -484,6 +494,7 @@ const handleTouch = (event: TouchEvent) => {
 ### Common Development Issues
 
 1. **Port Already in Use**
+
    ```bash
    # Kill process using port 5173
    lsof -ti:5173 | xargs kill

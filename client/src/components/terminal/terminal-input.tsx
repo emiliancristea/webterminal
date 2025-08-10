@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface TerminalInputProps {
   currentCommand: string;
   onCommandChange: (command: string) => void;
   onCommandExecute: (command: string) => void;
-  onHistoryNavigate: (direction: 'up' | 'down') => void;
+  onHistoryNavigate: (direction: "up" | "down") => void;
   disabled?: boolean;
   autoFocus?: boolean;
 }
@@ -27,27 +27,27 @@ export function TerminalInput({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
         if (currentCommand.trim() && !disabled) {
           onCommandExecute(currentCommand.trim());
         }
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
-        onHistoryNavigate('up');
+        onHistoryNavigate("up");
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
-        onHistoryNavigate('down');
+        onHistoryNavigate("down");
         break;
-      case 'c':
+      case "c":
         if (e.ctrlKey) {
           e.preventDefault();
-          onCommandChange('');
+          onCommandChange("");
         }
         break;
-      case 'l':
+      case "l":
         if (e.ctrlKey) {
           e.preventDefault();
           // Could trigger clear terminal

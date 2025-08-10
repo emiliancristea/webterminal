@@ -1,11 +1,21 @@
-import { type Session, type InsertSession, type Command, type InsertCommand, type File, type InsertFile } from "@shared/schema";
+import {
+  type Session,
+  type InsertSession,
+  type Command,
+  type InsertCommand,
+  type File,
+  type InsertFile,
+} from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
   // Session management
   createSession(session: InsertSession): Promise<Session>;
   getSession(id: string): Promise<Session | undefined>;
-  updateSession(id: string, updates: Partial<Session>): Promise<Session | undefined>;
+  updateSession(
+    id: string,
+    updates: Partial<Session>,
+  ): Promise<Session | undefined>;
 
   // Command history
   addCommand(command: InsertCommand): Promise<Command>;
@@ -36,10 +46,10 @@ export class MemStorage implements IStorage {
       lastActivity: new Date(),
     };
     this.sessions.set(id, session);
-    
+
     // Create initial file system structure
     await this.initializeFileSystem(id);
-    
+
     return session;
   }
 
@@ -47,10 +57,13 @@ export class MemStorage implements IStorage {
     return this.sessions.get(id);
   }
 
-  async updateSession(id: string, updates: Partial<Session>): Promise<Session | undefined> {
+  async updateSession(
+    id: string,
+    updates: Partial<Session>,
+  ): Promise<Session | undefined> {
     const session = this.sessions.get(id);
     if (!session) return undefined;
-    
+
     const updatedSession = { ...session, ...updates, lastActivity: new Date() };
     this.sessions.set(id, updatedSession);
     return updatedSession;
@@ -69,7 +82,7 @@ export class MemStorage implements IStorage {
 
   async getCommandHistory(sessionId: string, limit = 50): Promise<Command[]> {
     return Array.from(this.commands.values())
-      .filter(cmd => cmd.sessionId === sessionId)
+      .filter((cmd) => cmd.sessionId === sessionId)
       .sort((a, b) => b.timestamp!.getTime() - a.timestamp!.getTime())
       .slice(0, limit)
       .reverse();
@@ -94,20 +107,26 @@ export class MemStorage implements IStorage {
 
   async getFile(sessionId: string, path: string): Promise<File | undefined> {
     return Array.from(this.files.values()).find(
-      file => file.sessionId === sessionId && file.path === path
+      (file) => file.sessionId === sessionId && file.path === path,
     );
   }
 
   async getFilesByPath(sessionId: string, parentPath: string): Promise<File[]> {
     return Array.from(this.files.values()).filter(
-      file => file.sessionId === sessionId && file.path.startsWith(parentPath) && file.path !== parentPath
+      (file) =>
+        file.sessionId === sessionId &&
+        file.path.startsWith(parentPath) &&
+        file.path !== parentPath,
     );
   }
 
-  async updateFile(id: string, updates: Partial<File>): Promise<File | undefined> {
+  async updateFile(
+    id: string,
+    updates: Partial<File>,
+  ): Promise<File | undefined> {
     const file = this.files.get(id);
     if (!file) return undefined;
-    
+
     const updatedFile = { ...file, ...updates, updatedAt: new Date() };
     this.files.set(id, updatedFile);
     return updatedFile;
@@ -119,7 +138,7 @@ export class MemStorage implements IStorage {
 
   async getFileTree(sessionId: string): Promise<File[]> {
     return Array.from(this.files.values())
-      .filter(file => file.sessionId === sessionId)
+      .filter((file) => file.sessionId === sessionId)
       .sort((a, b) => {
         if (a.isDirectory && !b.isDirectory) return -1;
         if (!a.isDirectory && b.isDirectory) return 1;
@@ -136,7 +155,7 @@ export class MemStorage implements IStorage {
       isDirectory: true,
       permissions: "755",
     };
-    
+
     const userDir: InsertFile = {
       sessionId,
       path: "/home/user",
@@ -183,7 +202,8 @@ if __name__ == "__main__":
       sessionId,
       path: "/home/user/readme.txt",
       name: "readme.txt",
-      content: "Welcome to WebTerminal!\n\nThis is a real Linux environment running in your browser.\n\nTry running some commands:\n- ls -la\n- cat app.py\n- python3 app.py",
+      content:
+        "Welcome to WebTerminal!\n\nThis is a real Linux environment running in your browser.\n\nTry running some commands:\n- ls -la\n- cat app.py\n- python3 app.py",
       isDirectory: false,
       permissions: "644",
     };
