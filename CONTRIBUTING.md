@@ -68,6 +68,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -80,6 +81,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment**
+
 - OS: [e.g. iOS]
 - Browser [e.g. chrome, safari]
 - Version [e.g. 22]
@@ -113,6 +115,7 @@ A clear and concise description of any alternative solutions or features you've 
 Add any other context or screenshots about the feature request here.
 
 **Implementation considerations**
+
 - How does this fit with existing architecture?
 - What are the potential challenges?
 - Are there any breaking changes?
@@ -132,9 +135,11 @@ Add any other context or screenshots about the feature request here.
 
 ```markdown
 ## Description
+
 Brief description of what this PR does.
 
 ## Type of Change
+
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
@@ -143,11 +148,13 @@ Brief description of what this PR does.
 - [ ] Performance improvement
 
 ## Testing
+
 - [ ] I have tested my changes locally
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
 
 ## Checklist
+
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
@@ -156,9 +163,11 @@ Brief description of what this PR does.
 - [ ] I have checked my code and corrected any misspellings
 
 ## Screenshots (if applicable)
+
 Add screenshots to help explain your changes.
 
 ## Related Issues
+
 Fixes #(issue_number)
 ```
 
@@ -199,13 +208,13 @@ interface TerminalInputProps {
   className?: string;
 }
 
-export function TerminalInput({ 
-  onCommand, 
-  disabled = false, 
-  className 
+export function TerminalInput({
+  onCommand,
+  disabled = false,
+  className
 }: TerminalInputProps) {
   const [input, setInput] = useState('');
-  
+
   const handleSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
@@ -224,7 +233,7 @@ export function TerminalInput({
 // ❌ Bad
 export function TerminalInput(props: any) {
   const [input, setInput] = useState('');
-  
+
   function handleSubmit(e) {
     // implementation
   }
@@ -267,20 +276,20 @@ export function TerminalInput(props: any) {
 
 ```typescript
 // 1. External libraries
-import React, { useState, useEffect, useCallback } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import React, { useState, useEffect, useCallback } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 // 2. Internal components and hooks
-import { Button } from '@/components/ui/button';
-import { useTerminal } from '@/hooks/use-terminal';
-import { TerminalOutput } from '@/components/terminal/terminal-output';
+import { Button } from "@/components/ui/button";
+import { useTerminal } from "@/hooks/use-terminal";
+import { TerminalOutput } from "@/components/terminal/terminal-output";
 
 // 3. Utilities and types
-import { cn } from '@/lib/utils';
-import type { Session, Command } from '@shared/schema';
+import { cn } from "@/lib/utils";
+import type { Session, Command } from "@shared/schema";
 
 // 4. Relative imports
-import './terminal.css';
+import "./terminal.css";
 ```
 
 ## 🧪 Testing Guidelines
@@ -290,23 +299,27 @@ import './terminal.css';
 When submitting changes, please test:
 
 **Terminal Functionality:**
+
 - [ ] Command execution works
 - [ ] Directory navigation functions
 - [ ] File operations complete successfully
 - [ ] Error handling displays properly
 
 **WebSocket Communication:**
+
 - [ ] Real-time command execution
 - [ ] Connection resilience
 - [ ] Reconnection after network issues
 
 **UI/UX:**
+
 - [ ] Responsive design on mobile and desktop
 - [ ] Keyboard shortcuts work
 - [ ] Accessibility features function
 - [ ] Dark/light theme switching
 
 **Performance:**
+
 - [ ] App loads quickly
 - [ ] Commands execute without delay
 - [ ] Memory usage remains reasonable
@@ -318,26 +331,26 @@ We plan to add comprehensive testing. When writing tests:
 
 ```typescript
 // Component tests
-describe('TerminalInput', () => {
-  it('should execute command on submit', () => {
+describe("TerminalInput", () => {
+  it("should execute command on submit", () => {
     // test implementation
   });
 
-  it('should clear input after execution', () => {
+  it("should clear input after execution", () => {
     // test implementation
   });
 });
 
 // Hook tests
-describe('useTerminal', () => {
-  it('should manage session state', () => {
+describe("useTerminal", () => {
+  it("should manage session state", () => {
     // test implementation
   });
 });
 
 // API tests
-describe('Session API', () => {
-  it('should create new session', async () => {
+describe("Session API", () => {
+  it("should create new session", async () => {
     // test implementation
   });
 });
@@ -356,8 +369,8 @@ describe('Session API', () => {
  * @throws {Error} When command is restricted or session not found
  */
 async function executeCommand(
-  command: string, 
-  sessionId: string
+  command: string,
+  sessionId: string,
 ): Promise<CommandResult> {
   // implementation
 }
@@ -366,6 +379,7 @@ async function executeCommand(
 ### README Updates
 
 When adding new features:
+
 - Update feature list in README
 - Add usage examples
 - Update API documentation if applicable
@@ -462,6 +476,7 @@ We are committed to providing a welcoming and inspiring community for all. Pleas
 ### Recognition
 
 Contributors will be recognized in:
+
 - README.md contributors section
 - Release notes for significant contributions
 - Special thanks in project documentation
@@ -475,6 +490,7 @@ By contributing, you agree that your contributions will be licensed under the MI
 ### Versioning
 
 We use [Semantic Versioning](https://semver.org/):
+
 - **MAJOR**: Incompatible API changes
 - **MINOR**: Backwards-compatible functionality additions
 - **PATCH**: Backwards-compatible bug fixes

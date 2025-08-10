@@ -44,7 +44,7 @@ export default {
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
-        
+
         // Terminal Colors
         "terminal-black": "var(--terminal-black)",
         "terminal-dark": "var(--terminal-dark)",
@@ -77,8 +77,8 @@ export default {
           },
         },
         blink: {
-          '0%, 50%': { opacity: '1' },
-          '51%, 100%': { opacity: '0' },
+          "0%, 50%": { opacity: "1" },
+          "51%, 100%": { opacity: "0" },
         },
       },
       animation: {
@@ -87,7 +87,7 @@ export default {
         blink: "blink 1s infinite",
       },
       spacing: {
-        '18': '4.5rem',
+        "18": "4.5rem",
       },
     },
   },

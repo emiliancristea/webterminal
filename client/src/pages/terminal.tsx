@@ -1,15 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { useTerminal } from '@/hooks/use-terminal';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { TerminalOutput } from '@/components/terminal/terminal-output';
-import { TerminalInput } from '@/components/terminal/terminal-input';
-import { FileExplorer } from '@/components/terminal/file-explorer';
-import { MobileToolbar } from '@/components/terminal/mobile-toolbar';
-import { CommandBar } from '@/components/terminal/command-bar';
-import { apiRequest } from '@/lib/queryClient';
-import { cn } from '@/lib/utils';
-import type { Session } from '@shared/schema';
+import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useTerminal } from "@/hooks/use-terminal";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { TerminalOutput } from "@/components/terminal/terminal-output";
+import { TerminalInput } from "@/components/terminal/terminal-input";
+import { FileExplorer } from "@/components/terminal/file-explorer";
+import { MobileToolbar } from "@/components/terminal/mobile-toolbar";
+import { CommandBar } from "@/components/terminal/command-bar";
+import { apiRequest } from "@/lib/queryClient";
+import { cn } from "@/lib/utils";
+import type { Session } from "@shared/schema";
 
 export default function TerminalPage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -19,9 +19,9 @@ export default function TerminalPage() {
 
   // Create or get existing session
   const { data: session, isLoading: sessionLoading } = useQuery<Session>({
-    queryKey: ['/api/sessions/create'],
+    queryKey: ["/api/sessions/create"],
     queryFn: async () => {
-      const response = await apiRequest('POST', '/api/sessions');
+      const response = await apiRequest("POST", "/api/sessions");
       return response.json();
     },
     staleTime: Infinity, // Keep session alive
@@ -34,17 +34,19 @@ export default function TerminalPage() {
   }, [session]);
 
   const terminal = useTerminal({
-    sessionId: sessionId || '',
+    sessionId: sessionId || "",
   });
 
   const handleToggleSidebar = useCallback(() => {
-    setSidebarVisible(prev => !prev);
+    setSidebarVisible((prev) => !prev);
   }, []);
 
   const handleToggleKeyboard = useCallback(() => {
-    setKeyboardVisible(prev => !prev);
+    setKeyboardVisible((prev) => !prev);
     // Focus the terminal input to show virtual keyboard
-    const input = document.querySelector('[data-testid="terminal-input"]') as HTMLInputElement;
+    const input = document.querySelector(
+      '[data-testid="terminal-input"]',
+    ) as HTMLInputElement;
     if (input) {
       input.focus();
     }
@@ -52,11 +54,13 @@ export default function TerminalPage() {
 
   const handleShowSettings = useCallback(() => {
     // TODO: Implement settings modal
-    console.log('Show settings');
+    console.log("Show settings");
   }, []);
 
   const handleFocusTerminal = useCallback(() => {
-    const input = document.querySelector('[data-testid="terminal-input"]') as HTMLInputElement;
+    const input = document.querySelector(
+      '[data-testid="terminal-input"]',
+    ) as HTMLInputElement;
     if (input) {
       input.focus();
     }
@@ -69,30 +73,39 @@ export default function TerminalPage() {
   }, [terminal]);
 
   const handleClearCommand = useCallback(() => {
-    terminal.setCurrentCommand('');
+    terminal.setCurrentCommand("");
   }, [terminal]);
 
   const handleShowHistory = useCallback(() => {
     // TODO: Implement history modal
-    console.log('Show command history');
+    console.log("Show command history");
   }, []);
 
-  const handleQuickCommand = useCallback((command: string) => {
-    terminal.setCurrentCommand(command);
-    handleFocusTerminal();
-  }, [terminal, handleFocusTerminal]);
+  const handleQuickCommand = useCallback(
+    (command: string) => {
+      terminal.setCurrentCommand(command);
+      handleFocusTerminal();
+    },
+    [terminal, handleFocusTerminal],
+  );
 
-  const handleCreateFile = useCallback(async (name: string) => {
-    terminal.executeCommand(`touch ${name}`);
-  }, [terminal]);
+  const handleCreateFile = useCallback(
+    async (name: string) => {
+      terminal.executeCommand(`touch ${name}`);
+    },
+    [terminal],
+  );
 
-  const handleCreateFolder = useCallback(async (name: string) => {
-    terminal.executeCommand(`mkdir ${name}`);
-  }, [terminal]);
+  const handleCreateFolder = useCallback(
+    async (name: string) => {
+      terminal.executeCommand(`mkdir ${name}`);
+    },
+    [terminal],
+  );
 
   useEffect(() => {
     let resizeTimeout: NodeJS.Timeout;
-    
+
     const handleResize = () => {
       // Debounce resize events to avoid spam
       clearTimeout(resizeTimeout);
@@ -105,11 +118,11 @@ export default function TerminalPage() {
       }, 250);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize(); // Initial call
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       clearTimeout(resizeTimeout);
     };
   }, [terminal]);
@@ -215,22 +228,36 @@ export default function TerminalPage() {
       {!isMobile && (
         <div className="bg-terminal-dark border-t border-terminal-grey/20 px-4 py-2 text-xs text-terminal-grey flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <span className={cn(
-              terminal.isConnected ? "text-terminal-green" : "text-terminal-red"
-            )}>
+            <span
+              className={cn(
+                terminal.isConnected
+                  ? "text-terminal-green"
+                  : "text-terminal-red",
+              )}
+            >
               {terminal.isConnected ? "Connected" : "Disconnected"}
             </span>
             <div className="flex items-center space-x-1">
-              <div className={cn(
-                "w-2 h-2 rounded-full",
-                terminal.isConnected ? "bg-terminal-green" : "bg-terminal-red"
-              )} />
-              <span data-testid="text-session-time">Session: {sessionId.slice(0, 8)}</span>
+              <div
+                className={cn(
+                  "w-2 h-2 rounded-full",
+                  terminal.isConnected
+                    ? "bg-terminal-green"
+                    : "bg-terminal-red",
+                )}
+              />
+              <span data-testid="text-session-time">
+                Session: {sessionId.slice(0, 8)}
+              </span>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <span data-testid="text-current-directory">{terminal.prompt.directory}</span>
-            <span data-testid="text-current-user">{terminal.prompt.user}@{terminal.prompt.hostname}</span>
+            <span data-testid="text-current-directory">
+              {terminal.prompt.directory}
+            </span>
+            <span data-testid="text-current-user">
+              {terminal.prompt.user}@{terminal.prompt.hostname}
+            </span>
             <span>UTF-8</span>
           </div>
         </div>

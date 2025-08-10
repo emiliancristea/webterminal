@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { cn } from '@/lib/utils';
+import { useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface TerminalOutput {
   id: string;
-  type: 'command' | 'output' | 'error';
+  type: "command" | "output" | "error";
   content: string;
   timestamp: Date;
   exitCode?: string;
@@ -23,7 +23,13 @@ interface TerminalOutputProps {
   onFocus: () => void;
 }
 
-export function TerminalOutput({ output, prompt, currentCommand, isLoading, onFocus }: TerminalOutputProps) {
+export function TerminalOutput({
+  output,
+  prompt,
+  currentCommand,
+  isLoading,
+  onFocus,
+}: TerminalOutputProps) {
   const outputRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new output is added
@@ -36,20 +42,24 @@ export function TerminalOutput({ output, prompt, currentCommand, isLoading, onFo
   const formatOutput = (content: string) => {
     // Handle ANSI escape sequences for colors and formatting
     return content
-      .replace(/\x1b\[2J\x1b\[H/g, '') // Clear screen sequences
-      .split('\n')
+      .replace(/\x1b\[2J\x1b\[H/g, "") // Clear screen sequences
+      .split("\n")
       .map((line, index) => (
         <div key={index} className="min-h-[1em]">
-          {line || '\u00A0'}
+          {line || "\u00A0"}
         </div>
       ));
   };
 
   const renderPrompt = (user: string, hostname: string, directory: string) => (
     <div className="flex items-center flex-wrap">
-      <span className="text-terminal-green" data-testid="prompt-user">{user}@{hostname}</span>
+      <span className="text-terminal-green" data-testid="prompt-user">
+        {user}@{hostname}
+      </span>
       <span className="text-terminal-blue">:</span>
-      <span className="text-terminal-blue" data-testid="prompt-directory">{directory}</span>
+      <span className="text-terminal-blue" data-testid="prompt-directory">
+        {directory}
+      </span>
       <span className="text-terminal-white">$&nbsp;</span>
     </div>
   );
@@ -78,24 +88,33 @@ export function TerminalOutput({ output, prompt, currentCommand, isLoading, onFo
       <div className="space-y-1">
         {output.map((item) => (
           <div key={item.id} className="terminal-line">
-            {item.type === 'command' && (
+            {item.type === "command" && (
               <div className="flex items-center flex-wrap mb-1">
                 {renderPrompt(prompt.user, prompt.hostname, prompt.directory)}
-                <span className="text-terminal-white" data-testid={`command-${item.id}`}>
+                <span
+                  className="text-terminal-white"
+                  data-testid={`command-${item.id}`}
+                >
                   {item.content}
                 </span>
               </div>
             )}
-            {item.type === 'output' && (
-              <div className={cn(
-                "text-terminal-white whitespace-pre-wrap text-xs",
-                item.exitCode && item.exitCode !== '0' && "text-terminal-red"
-              )} data-testid={`output-${item.id}`}>
+            {item.type === "output" && (
+              <div
+                className={cn(
+                  "text-terminal-white whitespace-pre-wrap text-xs",
+                  item.exitCode && item.exitCode !== "0" && "text-terminal-red",
+                )}
+                data-testid={`output-${item.id}`}
+              >
                 {formatOutput(item.content)}
               </div>
             )}
-            {item.type === 'error' && (
-              <div className="text-terminal-red whitespace-pre-wrap text-xs" data-testid={`error-${item.id}`}>
+            {item.type === "error" && (
+              <div
+                className="text-terminal-red whitespace-pre-wrap text-xs"
+                data-testid={`error-${item.id}`}
+              >
                 {formatOutput(item.content)}
               </div>
             )}
@@ -109,12 +128,15 @@ export function TerminalOutput({ output, prompt, currentCommand, isLoading, onFo
         <span className="text-terminal-white" data-testid="current-command">
           {currentCommand}
         </span>
-        <span className={cn(
-          "bg-terminal-white w-2 h-4 inline-block ml-1",
-          isLoading ? "animate-pulse" : "animate-pulse"
-        )} style={{
-          animation: isLoading ? 'pulse 1s infinite' : 'blink 1s infinite'
-        }} />
+        <span
+          className={cn(
+            "bg-terminal-white w-2 h-4 inline-block ml-1",
+            isLoading ? "animate-pulse" : "animate-pulse",
+          )}
+          style={{
+            animation: isLoading ? "pulse 1s infinite" : "blink 1s infinite",
+          }}
+        />
       </div>
 
       {isLoading && (

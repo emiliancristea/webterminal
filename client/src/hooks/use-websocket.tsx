@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from "react";
 
 interface WebSocketMessage {
   type: string;
@@ -12,7 +12,10 @@ interface UseWebSocketOptions {
   onError?: (error: Event) => void;
 }
 
-export function useWebSocket(url: string | null, options: UseWebSocketOptions = {}) {
+export function useWebSocket(
+  url: string | null,
+  options: UseWebSocketOptions = {},
+) {
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
@@ -25,8 +28,10 @@ export function useWebSocket(url: string | null, options: UseWebSocketOptions = 
 
     try {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const wsUrl = url.startsWith('ws') ? url : `${protocol}//${window.location.host}${url}`;
-      
+      const wsUrl = url.startsWith("ws")
+        ? url
+        : `${protocol}//${window.location.host}${url}`;
+
       wsRef.current = new WebSocket(wsUrl);
 
       wsRef.current.onopen = () => {
@@ -41,35 +46,37 @@ export function useWebSocket(url: string | null, options: UseWebSocketOptions = 
           const message = JSON.parse(event.data);
           options.onMessage?.(message);
         } catch (err) {
-          console.error('Failed to parse WebSocket message:', err);
+          console.error("Failed to parse WebSocket message:", err);
         }
       };
 
       wsRef.current.onclose = () => {
         setIsConnected(false);
         options.onDisconnect?.();
-        
+
         // Attempt to reconnect
         if (reconnectAttemptsRef.current < maxReconnectAttempts) {
           reconnectAttemptsRef.current++;
-          const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current), 10000);
-          
+          const delay = Math.min(
+            1000 * Math.pow(2, reconnectAttemptsRef.current),
+            10000,
+          );
+
           reconnectTimeoutRef.current = setTimeout(() => {
             connect();
           }, delay);
         } else {
-          setError('Failed to connect after multiple attempts');
+          setError("Failed to connect after multiple attempts");
         }
       };
 
       wsRef.current.onerror = (event) => {
-        setError('WebSocket connection error');
+        setError("WebSocket connection error");
         options.onError?.(event);
       };
-
     } catch (err) {
-      setError('Failed to create WebSocket connection');
-      console.error('WebSocket connection error:', err);
+      setError("Failed to create WebSocket connection");
+      console.error("WebSocket connection error:", err);
     }
   }, [url]);
 
@@ -77,12 +84,12 @@ export function useWebSocket(url: string | null, options: UseWebSocketOptions = 
     if (reconnectTimeoutRef.current) {
       clearTimeout(reconnectTimeoutRef.current);
     }
-    
+
     if (wsRef.current) {
       wsRef.current.close();
       wsRef.current = null;
     }
-    
+
     setIsConnected(false);
   }, []);
 

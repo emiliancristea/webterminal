@@ -54,12 +54,14 @@ Web Terminal is built as a modern full-stack application with real-time communic
 ## Data Flow
 
 ### 1. Session Creation
+
 ```
 User opens app → Frontend requests session → Server creates isolated environment
                                           → Returns session ID and metadata
 ```
 
 ### 2. Command Execution
+
 ```
 User types command → Frontend sends via WebSocket → Server validates command
                                                   → Executes in sandbox
@@ -68,6 +70,7 @@ User types command → Frontend sends via WebSocket → Server validates command
 ```
 
 ### 3. Real-time Communication
+
 ```
 WebSocket connection maintains persistent bidirectional communication
 - Commands flow: Client → Server
@@ -128,30 +131,35 @@ shared/
 ### Frontend Stack
 
 **React 18**
+
 - Modern concurrent features
 - Automatic batching for performance
 - Suspense for data loading
 - Error boundaries for reliability
 
 **TypeScript**
+
 - Static type checking
 - Enhanced IDE support
 - Better refactoring capabilities
 - Runtime error prevention
 
 **Vite**
+
 - Lightning-fast development server
 - Hot module replacement
 - Optimized production builds
 - ES module support
 
 **TanStack React Query**
+
 - Server state management
 - Automatic caching and synchronization
 - Background updates
 - Optimistic updates
 
 **Tailwind CSS + shadcn/ui**
+
 - Utility-first styling approach
 - Consistent design system
 - Accessible components
@@ -160,18 +168,21 @@ shared/
 ### Backend Stack
 
 **Express.js**
+
 - Minimal and flexible web framework
 - Rich middleware ecosystem
 - Easy API development
 - WebSocket integration
 
 **WebSocket (ws)**
+
 - Real-time bidirectional communication
 - Low latency for terminal interactions
 - Automatic reconnection handling
 - Event-based messaging
 
 **Node.js Child Process**
+
 - Direct shell command execution
 - Stream-based I/O handling
 - Process isolation
@@ -180,12 +191,14 @@ shared/
 ### Database Layer
 
 **Drizzle ORM**
+
 - Type-safe database operations
 - Lightweight and performant
 - Excellent TypeScript integration
 - Migration management
 
 **PostgreSQL (Optional)**
+
 - ACID compliance
 - Rich data types
 - Excellent performance
@@ -256,6 +269,7 @@ shared/
 ## Deployment Architecture
 
 ### Development Environment
+
 ```
 Vite Dev Server (Frontend) ←→ Express Server (Backend)
                             ↓
@@ -263,6 +277,7 @@ Vite Dev Server (Frontend) ←→ Express Server (Backend)
 ```
 
 ### Production Environment
+
 ```
 CDN/Nginx (Static Assets) → Load Balancer → App Servers
                                           ↓

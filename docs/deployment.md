@@ -11,12 +11,14 @@ This guide covers deployment options for the Web Terminal application, from deve
 The easiest way to deploy Web Terminal is on Replit, which provides an integrated development and hosting environment.
 
 **Steps:**
+
 1. Import the repository to Replit
 2. Dependencies install automatically
 3. Click "Run" to start the application
 4. Your app is live at `https://your-repl-name.your-username.repl.co`
 
 **Advantages:**
+
 - Zero configuration required
 - Automatic HTTPS
 - Built-in database options
@@ -28,6 +30,7 @@ The easiest way to deploy Web Terminal is on Replit, which provides an integrate
 Deploy the frontend and backend together using Vercel's full-stack capabilities.
 
 **Steps:**
+
 1. Connect your GitHub repository to Vercel
 2. Configure build settings:
    ```
@@ -39,6 +42,7 @@ Deploy the frontend and backend together using Vercel's full-stack capabilities.
 4. Deploy automatically on git push
 
 **Configuration:**
+
 ```json
 // vercel.json
 {
@@ -64,6 +68,7 @@ Deploy the frontend and backend together using Vercel's full-stack capabilities.
 Railway provides simple deployment with PostgreSQL database support.
 
 **Steps:**
+
 1. Connect GitHub repository to Railway
 2. Add PostgreSQL plugin
 3. Set environment variables:
@@ -78,6 +83,7 @@ Railway provides simple deployment with PostgreSQL database support.
 Traditional PaaS deployment with add-on ecosystem.
 
 **Steps:**
+
 1. Install Heroku CLI
 2. Create application:
    ```bash
@@ -199,7 +205,7 @@ server {
     location / {
         root /path/to/webterminal/dist/public;
         try_files $uri $uri/ /index.html;
-        
+
         # Cache static assets
         location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
             expires 1y;
@@ -218,7 +224,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
-        
+
         # Timeout settings for long-running commands
         proxy_connect_timeout 60s;
         proxy_send_timeout 60s;
@@ -235,12 +241,12 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        
+
         # WebSocket specific settings
         proxy_set_header Sec-WebSocket-Extensions $http_sec_websocket_extensions;
         proxy_set_header Sec-WebSocket-Key $http_sec_websocket_key;
         proxy_set_header Sec-WebSocket-Version $http_sec_websocket_version;
-        
+
         # Prevent timeout on WebSocket connections
         proxy_read_timeout 86400;
         proxy_send_timeout 86400;
@@ -310,7 +316,7 @@ CMD ["node", "dist/index.js"]
 
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -387,6 +393,7 @@ SENTRY_DSN=https://your-sentry-dsn
 ### Environment-Specific Configs
 
 #### Development
+
 ```bash
 NODE_ENV=development
 PORT=5173
@@ -394,6 +401,7 @@ LOG_LEVEL=debug
 ```
 
 #### Staging
+
 ```bash
 NODE_ENV=staging
 PORT=3000
@@ -402,6 +410,7 @@ LOG_LEVEL=info
 ```
 
 #### Production
+
 ```bash
 NODE_ENV=production
 PORT=3000
@@ -449,9 +458,9 @@ npm run db:seed
 
 ```javascript
 // Add to server/index.ts
-import * as Sentry from '@sentry/node';
+import * as Sentry from "@sentry/node";
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
   });
@@ -474,9 +483,9 @@ sudo tail -f /var/log/nginx/error.log
 
 ```javascript
 // Add health check endpoint
-app.get('/health', (req, res) => {
+app.get("/health", (req, res) => {
   res.json({
-    status: 'ok',
+    status: "ok",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     memory: process.memoryUsage(),
@@ -565,15 +574,17 @@ location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
 
 ```javascript
 // Use CDN for static assets in production
-const CDN_URL = process.env.CDN_URL || '';
+const CDN_URL = process.env.CDN_URL || "";
 
-app.use(express.static('dist/public', {
+app.use(
+  express.static("dist/public", {
     setHeaders: (res, path) => {
-        if (path.match(/\.(js|css)$/)) {
-            res.setHeader('Cache-Control', 'public, max-age=31536000');
-        }
-    }
-}));
+      if (path.match(/\.(js|css)$/)) {
+        res.setHeader("Cache-Control", "public, max-age=31536000");
+      }
+    },
+  }),
+);
 ```
 
 ## Scaling Considerations
@@ -599,6 +610,7 @@ server {
 ### WebSocket Scaling
 
 For multiple server instances, consider:
+
 - Redis for session sharing
 - Sticky sessions for WebSocket connections
 - WebSocket clustering solutions
@@ -608,18 +620,21 @@ For multiple server instances, consider:
 ### Common Deployment Issues
 
 1. **Port Conflicts**
+
    ```bash
    sudo lsof -i :3000
    sudo kill -9 <PID>
    ```
 
 2. **Permission Issues**
+
    ```bash
    sudo chown -R nodejs:nodejs /path/to/webterminal
    chmod +x dist/index.js
    ```
 
 3. **Database Connection**
+
    ```bash
    # Test database connection
    pg_isready -h localhost -p 5432
@@ -677,6 +692,7 @@ pm2 restart webterminal
 ## Support
 
 For deployment issues:
+
 1. Check the logs first
 2. Review this documentation
 3. Open an issue on GitHub with deployment details

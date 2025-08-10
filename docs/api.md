@@ -20,6 +20,7 @@ Currently, the API does not require authentication. Sessions are managed by uniq
 ### Sessions
 
 #### Create Session
+
 ```http
 POST /api/sessions
 ```
@@ -27,6 +28,7 @@ POST /api/sessions
 Creates a new terminal session with isolated environment.
 
 **Response:**
+
 ```json
 {
   "id": "uuid-string",
@@ -39,6 +41,7 @@ Creates a new terminal session with isolated environment.
 ```
 
 #### Get Session
+
 ```http
 GET /api/sessions/:sessionId
 ```
@@ -46,9 +49,11 @@ GET /api/sessions/:sessionId
 Retrieves information about a specific session.
 
 **Parameters:**
+
 - `sessionId` (string): The unique session identifier
 
 **Response:**
+
 ```json
 {
   "id": "uuid-string",
@@ -63,6 +68,7 @@ Retrieves information about a specific session.
 ```
 
 #### List Session Commands
+
 ```http
 GET /api/sessions/:sessionId/commands
 ```
@@ -70,9 +76,11 @@ GET /api/sessions/:sessionId/commands
 Retrieves command history for a session.
 
 **Parameters:**
+
 - `sessionId` (string): The unique session identifier
 
 **Response:**
+
 ```json
 [
   {
@@ -93,7 +101,7 @@ The WebSocket connection is established at `/ws` and handles real-time terminal 
 ### Connection
 
 ```javascript
-const ws = new WebSocket('ws://localhost:5173/ws');
+const ws = new WebSocket("ws://localhost:5173/ws");
 ```
 
 ### Message Format
@@ -111,6 +119,7 @@ All WebSocket messages follow this structure:
 ### Client → Server Events
 
 #### Execute Command
+
 ```json
 {
   "type": "command",
@@ -120,6 +129,7 @@ All WebSocket messages follow this structure:
 ```
 
 #### Change Directory
+
 ```json
 {
   "type": "cd",
@@ -129,6 +139,7 @@ All WebSocket messages follow this structure:
 ```
 
 #### Terminal Resize
+
 ```json
 {
   "type": "resize",
@@ -141,6 +152,7 @@ All WebSocket messages follow this structure:
 ### Server → Client Events
 
 #### Command Output
+
 ```json
 {
   "type": "output",
@@ -152,6 +164,7 @@ All WebSocket messages follow this structure:
 ```
 
 #### Directory Changed
+
 ```json
 {
   "type": "directory",
@@ -161,6 +174,7 @@ All WebSocket messages follow this structure:
 ```
 
 #### Error Messages
+
 ```json
 {
   "type": "error",
@@ -171,6 +185,7 @@ All WebSocket messages follow this structure:
 ```
 
 #### Session Status
+
 ```json
 {
   "type": "status",
@@ -254,7 +269,7 @@ class WebTerminalClient {
 
   async createSession() {
     const response = await fetch(`${this.serverUrl}/api/sessions`, {
-      method: 'POST'
+      method: "POST",
     });
     const session = await response.json();
     this.sessionId = session.id;
@@ -262,8 +277,8 @@ class WebTerminalClient {
   }
 
   connectWebSocket() {
-    this.ws = new WebSocket(`${this.serverUrl.replace('http', 'ws')}/ws`);
-    
+    this.ws = new WebSocket(`${this.serverUrl.replace("http", "ws")}/ws`);
+
     this.ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
       this.handleMessage(message);
@@ -272,34 +287,36 @@ class WebTerminalClient {
 
   executeCommand(command) {
     if (this.ws && this.sessionId) {
-      this.ws.send(JSON.stringify({
-        type: 'command',
-        sessionId: this.sessionId,
-        command: command
-      }));
+      this.ws.send(
+        JSON.stringify({
+          type: "command",
+          sessionId: this.sessionId,
+          command: command,
+        }),
+      );
     }
   }
 
   handleMessage(message) {
     switch (message.type) {
-      case 'output':
-        console.log('Command output:', message.output);
+      case "output":
+        console.log("Command output:", message.output);
         break;
-      case 'directory':
-        console.log('Directory changed:', message.currentDirectory);
+      case "directory":
+        console.log("Directory changed:", message.currentDirectory);
         break;
-      case 'error':
-        console.error('Error:', message.message);
+      case "error":
+        console.error("Error:", message.message);
         break;
     }
   }
 }
 
 // Usage
-const client = new WebTerminalClient('http://localhost:5173');
+const client = new WebTerminalClient("http://localhost:5173");
 await client.createSession();
 client.connectWebSocket();
-client.executeCommand('ls -la');
+client.executeCommand("ls -la");
 ```
 
 ### cURL Examples

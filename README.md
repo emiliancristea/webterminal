@@ -11,6 +11,7 @@ A full-featured Linux terminal environment accessible through your web browser. 
 ## 🚀 Features
 
 ### Core Terminal Functionality
+
 - **Real Linux Command Execution**: Execute actual shell commands, not simulations
 - **Persistent Sessions**: Maintain terminal state across browser refreshes and reconnections
 - **Working Directory Management**: Isolated temporary directories for each session
@@ -18,11 +19,13 @@ A full-featured Linux terminal environment accessible through your web browser. 
 - **Environment Variables**: Persistent environment variable support
 
 ### Security & Sandboxing
+
 - **Secure Command Execution**: Restricted access to dangerous system operations
 - **Session Isolation**: Each session operates in its own sandboxed environment
 - **Safe Defaults**: Protection against destructive commands like `rm -rf /`
 
 ### Modern Web Interface
+
 - **Real-time Communication**: WebSocket-based bidirectional terminal communication
 - **Mobile Optimized**: Touch-friendly interface with virtual keyboard support
 - **Responsive Design**: Seamless experience from mobile to desktop
@@ -30,6 +33,7 @@ A full-featured Linux terminal environment accessible through your web browser. 
 - **Dark/Light Theme**: Adaptive theming support
 
 ### Developer Experience
+
 - **TypeScript First**: Full type safety across client and server
 - **Modern Stack**: React 18, Vite, Express.js, WebSockets
 - **Database Ready**: Drizzle ORM with PostgreSQL schema design
@@ -38,6 +42,7 @@ A full-featured Linux terminal environment accessible through your web browser. 
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **React 18** - Modern React with hooks and concurrent features
 - **TypeScript** - Type-safe development experience
 - **Vite** - Fast development server and optimized builds
@@ -48,6 +53,7 @@ A full-featured Linux terminal environment accessible through your web browser. 
 - **Framer Motion** - Smooth animations and transitions
 
 ### Backend
+
 - **Express.js** - Web application framework
 - **WebSocket (ws)** - Real-time bidirectional communication
 - **Node.js Child Process** - Secure command execution
@@ -55,11 +61,13 @@ A full-featured Linux terminal environment accessible through your web browser. 
 - **TypeScript** - Type-safe server development
 
 ### Database & ORM
+
 - **Drizzle ORM** - Type-safe database toolkit
 - **PostgreSQL** - Production-ready database (optional)
 - **Zod** - Schema validation and type inference
 
 ### Development Tools
+
 - **ESBuild** - Fast JavaScript bundler
 - **PostCSS** - CSS processing with Autoprefixer
 - **TypeScript Compiler** - Static type checking
@@ -67,24 +75,28 @@ A full-featured Linux terminal environment accessible through your web browser. 
 ## 📦 Installation
 
 ### Prerequisites
-- **Node.js** 18+ 
+
+- **Node.js** 18+
 - **npm** or **yarn**
 - **PostgreSQL** (optional, for persistent data)
 
 ### Quick Start
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/emiliancristea/webterminal.git
    cd webterminal
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Environment Setup** (optional)
+
    ```bash
    # For database features (optional)
    cp .env.example .env
@@ -92,6 +104,7 @@ A full-featured Linux terminal environment accessible through your web browser. 
    ```
 
 4. **Run development server**
+
    ```bash
    npm run dev
    ```
@@ -163,6 +176,7 @@ webterminal/
 ### Key Components
 
 #### Terminal Components
+
 - **TerminalOutput**: Renders command output and history
 - **TerminalInput**: Handles command input and execution
 - **FileExplorer**: Browse and manage files
@@ -170,6 +184,7 @@ webterminal/
 - **CommandBar**: Quick access to common commands
 
 #### Custom Hooks
+
 - **useTerminal**: Core terminal state and command execution
 - **useWebSocket**: WebSocket connection management
 - **useMobile**: Mobile device detection and optimization
@@ -193,11 +208,13 @@ REPL_ID=your-repl-id
 ### Customization
 
 #### Styling
+
 - Edit `tailwind.config.ts` for theme customization
 - Modify `client/src/index.css` for global styles
 - Components use CSS variables for easy theming
 
 #### Terminal Behavior
+
 - Configure command restrictions in `server/routes.ts`
 - Modify session settings in `server/storage.ts`
 - Adjust WebSocket settings for different environments
@@ -207,6 +224,7 @@ REPL_ID=your-repl-id
 ### REST Endpoints
 
 #### Sessions
+
 ```http
 POST /api/sessions
 # Creates a new terminal session
@@ -218,6 +236,7 @@ GET /api/sessions/:id
 ```
 
 #### Commands
+
 ```http
 POST /api/sessions/:id/commands
 # Executes a command in the session
@@ -232,6 +251,7 @@ GET /api/sessions/:id/commands
 ### WebSocket Events
 
 #### Client → Server
+
 ```javascript
 // Execute command
 {
@@ -249,6 +269,7 @@ GET /api/sessions/:id/commands
 ```
 
 #### Server → Client
+
 ```javascript
 // Command output
 {
@@ -279,16 +300,19 @@ The Web Terminal is fully optimized for mobile devices:
 ## 🔒 Security
 
 ### Command Restrictions
+
 - Dangerous commands are blocked (e.g., `sudo`, `rm -rf /`)
 - Operations are restricted to session-specific directories
 - No access to system-critical files or processes
 
 ### Session Isolation
+
 - Each session operates in isolated temporary directories
 - Environment variables are session-scoped
 - No cross-session data leakage
 
 ### Best Practices
+
 - Always run in a containerized environment for production
 - Configure firewall rules for the server port
 - Regular security updates for dependencies
@@ -306,6 +330,7 @@ We welcome contributions! Here's how to get started:
 7. **Open a Pull Request**
 
 ### Development Guidelines
+
 - Follow TypeScript best practices
 - Maintain component modularity
 - Write descriptive commit messages
@@ -327,18 +352,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🚀 Deployment
 
 ### Replit (Recommended)
+
 This project is optimized for Replit deployment:
+
 1. Import the repository to Replit
 2. Install dependencies automatically
 3. Run with the built-in runner
 
 ### Traditional Hosting
+
 1. Build the project: `npm run build`
 2. Deploy the `dist/` directory to your server
 3. Configure reverse proxy for WebSocket support
 4. Set up PostgreSQL database (optional)
 
 ### Docker (Coming Soon)
+
 Docker support is planned for easy containerized deployment.
 
 ---
