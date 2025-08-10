@@ -352,16 +352,41 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🚀 Deployment
 
-### GitHub Pages (Recommended for Static Demo)
+### GitHub Pages Demo (Recommended for Quick Preview)
+
+**🌐 [Try the Live Demo](https://emiliancristea.github.io/webterminal/)**
+
+Experience the Web Terminal interface with an interactive demo that works entirely in your browser:
+
+**✅ Demo Features:**
+- Full terminal UI with professional styling
+- Interactive command execution with realistic responses
+- Command history and navigation
+- Mobile-optimized interface
+- Help system with available commands
+
+**📋 Available Demo Commands:**
+```bash
+help          # Show available commands
+ls -la        # List directory contents
+pwd           # Show current directory  
+echo "text"   # Echo text back
+date          # Show current date/time
+whoami        # Show current user
+clear         # Clear terminal
+```
+
+**⚠️ Demo Limitations:**
+- Commands are simulated, not executed on a real system
+- No file system access or persistent storage
+- Limited to predefined demo commands
 
 This project is configured for automatic deployment to GitHub Pages:
 
 1. **Enable GitHub Pages**: Go to repository Settings → Pages → Source: GitHub Actions
 2. **Automatic Deployment**: Push to main branch triggers automatic deployment
 3. **Manual Deployment**: Use the "Deploy to GitHub Pages" workflow in Actions tab
-4. **Access**: Your app will be available at `https://emiliancristea.github.io/webterminal/`
-
-**Note**: GitHub Pages deployment provides a static frontend demo. For full terminal functionality, you'll need a backend server.
+4. **Access**: Your app will be available at `https://yourusername.github.io/webterminal/`
 
 ### Replit (Recommended for Full Functionality)
 
