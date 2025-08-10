@@ -28,6 +28,7 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
+  base: process.env.GITHUB_PAGES ? "/webterminal/" : "/",
   server: {
     fs: {
       strict: true,

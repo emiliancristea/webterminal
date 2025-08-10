@@ -351,7 +351,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🚀 Deployment
 
-### Replit (Recommended)
+### GitHub Pages (Recommended for Static Demo)
+
+This project is configured for automatic deployment to GitHub Pages:
+
+1. **Enable GitHub Pages**: Go to repository Settings → Pages → Source: GitHub Actions
+2. **Automatic Deployment**: Push to main branch triggers automatic deployment
+3. **Manual Deployment**: Use the "Deploy to GitHub Pages" workflow in Actions tab
+4. **Access**: Your app will be available at `https://emiliancristea.github.io/webterminal/`
+
+**Note**: GitHub Pages deployment provides a static frontend demo. For full terminal functionality, you'll need a backend server.
+
+### Replit (Recommended for Full Functionality)
 
 This project is optimized for Replit deployment:
 
