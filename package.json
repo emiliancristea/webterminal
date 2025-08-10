@@ -1,8 +1,24 @@
 {
-  "name": "rest-express",
+  "name": "webterminal",
   "version": "1.0.0",
+  "description": "A full-featured Linux terminal environment accessible through your web browser",
   "type": "module",
   "license": "MIT",
+  "author": "Emilian Cristea",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emiliancristea/webterminal.git"
+  },
+  "keywords": [
+    "terminal",
+    "web-terminal",
+    "linux",
+    "command-line",
+    "websocket",
+    "react",
+    "typescript",
+    "express"
+  ],
   "scripts": {
     "dev": "NODE_ENV=development tsx server/index.ts",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
