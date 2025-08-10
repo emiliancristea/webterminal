@@ -1,13 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTerminal } from "@/hooks/use-terminal";
+import { useDemoTerminal } from "@/hooks/use-demo-terminal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TerminalOutput } from "@/components/terminal/terminal-output";
 import { TerminalInput } from "@/components/terminal/terminal-input";
 import { FileExplorer } from "@/components/terminal/file-explorer";
 import { MobileToolbar } from "@/components/terminal/mobile-toolbar";
 import { CommandBar } from "@/components/terminal/command-bar";
+import { GitHubPagesBanner } from "@/components/github-pages-banner";
 import { apiRequest } from "@/lib/queryClient";
+import { isGitHubPages, isBackendAvailable, demoSessionId } from "@/lib/github-pages";
 import { cn } from "@/lib/utils";
 import type { Session } from "@shared/schema";
 
@@ -15,9 +18,28 @@ export default function TerminalPage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [backendChecked, setBackendChecked] = useState(false);
   const isMobile = useIsMobile();
 
-  // Create or get existing session
+  // Check if we're on GitHub Pages or if backend is available
+  useEffect(() => {
+    const checkEnvironment = async () => {
+      const isStaticMode = isGitHubPages();
+      const hasBackend = isStaticMode ? false : await isBackendAvailable();
+      
+      setIsDemoMode(isStaticMode || !hasBackend);
+      setBackendChecked(true);
+      
+      if (isStaticMode || !hasBackend) {
+        setSessionId(demoSessionId);
+      }
+    };
+
+    checkEnvironment();
+  }, []);
+
+  // Create or get existing session (only if not in demo mode)
   const { data: session, isLoading: sessionLoading } = useQuery<Session>({
     queryKey: ["/api/sessions/create"],
     queryFn: async () => {
@@ -25,17 +47,22 @@ export default function TerminalPage() {
       return response.json();
     },
     staleTime: Infinity, // Keep session alive
+    enabled: !isDemoMode && backendChecked, // Only run if not in demo mode
   });
 
   useEffect(() => {
-    if (session?.id) {
+    if (session?.id && !isDemoMode) {
       setSessionId(session.id);
     }
-  }, [session]);
+  }, [session, isDemoMode]);
 
-  const terminal = useTerminal({
+  // Use demo terminal for GitHub Pages, real terminal otherwise
+  const demoTerminal = useDemoTerminal();
+  const realTerminal = useTerminal({
     sessionId: sessionId || "",
   });
+
+  const terminal = isDemoMode ? demoTerminal : realTerminal;
 
   const handleToggleSidebar = useCallback(() => {
     setSidebarVisible((prev) => !prev);
@@ -127,11 +154,13 @@ export default function TerminalPage() {
     };
   }, [terminal]);
 
-  if (sessionLoading || !sessionId) {
+  if (!backendChecked || (sessionLoading && !isDemoMode) || (!sessionId && !isDemoMode)) {
     return (
       <div className="h-screen bg-terminal-black flex items-center justify-center">
         <div className="text-terminal-white font-mono">
-          <div className="animate-pulse">Initializing terminal session...</div>
+          <div className="animate-pulse">
+            {!backendChecked ? "Checking environment..." : "Initializing terminal session..."}
+          </div>
         </div>
       </div>
     );
@@ -139,6 +168,11 @@ export default function TerminalPage() {
 
   return (
     <div className="flex flex-col h-screen bg-terminal-black text-terminal-white font-mono overflow-hidden">
+      {/* GitHub Pages Demo Banner */}
+      {isDemoMode && (
+        <GitHubPagesBanner className="border-x-0 border-t-0 rounded-none" />
+      )}
+
       {/* Mobile Toolbar */}
       {isMobile && !terminal.isInitializing && (
         <MobileToolbar
@@ -146,14 +180,14 @@ export default function TerminalPage() {
           onToggleKeyboard={handleToggleKeyboard}
           onShowSettings={handleShowSettings}
           isConnected={terminal.isConnected}
-          sessionId={sessionId}
+          sessionId={sessionId || ""}
         />
       )}
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - File Explorer */}
         <FileExplorer
-          sessionId={sessionId}
+          sessionId={sessionId || ""}
           isVisible={!isMobile || sidebarVisible}
           onCreateFile={handleCreateFile}
           onCreateFolder={handleCreateFolder}
@@ -235,7 +269,7 @@ export default function TerminalPage() {
                   : "text-terminal-red",
               )}
             >
-              {terminal.isConnected ? "Connected" : "Disconnected"}
+              {isDemoMode ? "Demo Mode" : (terminal.isConnected ? "Connected" : "Disconnected")}
             </span>
             <div className="flex items-center space-x-1">
               <div
@@ -247,7 +281,7 @@ export default function TerminalPage() {
                 )}
               />
               <span data-testid="text-session-time">
-                Session: {sessionId.slice(0, 8)}
+                Session: {(sessionId || "").slice(0, 8)}
               </span>
             </div>
           </div>
